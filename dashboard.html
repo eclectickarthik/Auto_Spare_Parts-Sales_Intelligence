@@ -107,7 +107,62 @@
   }
   .reset-btn:hover { background: var(--border); }
 
-  .dash-body { max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem 3rem; }
+  /* ── Sidebar ── */
+  .dash-wrapper { display: flex; gap: 0; min-height: calc(100vh - 56px); }
+  .sidebar {
+    width: 260px; background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 1.25rem 1rem;
+    overflow-y: auto;
+    position: fixed;
+    left: 0; top: 56px; bottom: 0;
+  }
+  .dash-body { 
+    margin-left: 260px;
+    max-width: calc(100vw - 260px);
+    padding: 1.5rem 2rem 3rem;
+    flex: 1;
+  }
+  .filter-group {
+    margin-bottom: 1.5rem;
+  }
+  .filter-label {
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+    color: var(--muted); margin-bottom: 8px; display: block;
+  }
+  .filter-select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 13px;
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+  }
+  .filter-select:hover { border-color: var(--amber); }
+  .filter-select:focus { outline: none; border-color: var(--blue); background: var(--surface); }
+  .filter-btn-group {
+    display: flex; gap: 6px;
+  }
+  .filter-btn {
+    flex: 1;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface2);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .filter-btn:hover { border-color: var(--amber); }
+  .filter-btn.active { background: var(--amber); color: white; border-color: var(--amber); }
+  .sidebar-divider {
+    height: 1px; background: var(--border); margin: 1.25rem 0;
+  }
 
   .insights { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 1.25rem; }
   .insight {
@@ -178,6 +233,8 @@
   #loading p { font-size: 13px; color: var(--muted); font-weight: 500; }
 
   @media (max-width: 768px) {
+    .sidebar { position: relative; width: 100%; border-right: none; border-bottom: 1px solid var(--border); padding: 1rem; top: auto; left: auto; bottom: auto; }
+    .dash-body { margin-left: 0; max-width: 100%; }
     .kpis, .insights { grid-template-columns: repeat(2,1fr); }
     .row2, .row3 { grid-template-columns: 1fr; }
     .dash-body { padding: 1rem; }
@@ -235,6 +292,35 @@
       <button class="reset-btn" onclick="resetDashboard()">↩ Upload another</button>
     </div>
   </nav>
+
+  <!-- Sidebar Filters -->
+  <aside class="sidebar" id="sidebar">
+    <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:1rem">📊 Filters</div>
+
+    <div class="filter-group">
+      <label class="filter-label">Year</label>
+      <select class="filter-select" id="yearFilter" onchange="applyFilters()">
+        <option value="">All years</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label class="filter-label">Month</label>
+      <select class="filter-select" id="monthFilter" onchange="applyFilters()">
+        <option value="">All months</option>
+      </select>
+    </div>
+
+    <div class="filter-btn-group">
+      <button class="filter-btn active" id="btnClear" onclick="clearFilters()">Clear</button>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div style="font-size:10px;color:var(--hint);line-height:1.5">
+      <p><strong>Tip:</strong> Select year and month to filter all charts and metrics dynamically.</p>
+    </div>
+  </aside>
 
   <div class="dash-body">
     <div class="section-label">Key findings</div>
@@ -294,6 +380,7 @@
 const CAT_COLORS = ['#185FA5','#1D9E75','#534AB7','#BA7517','#D85A30','#888780','#993556','#085041'];
 const fmt = v => v >= 100000 ? '₹' + (v/100000).toFixed(2) + 'L' : v >= 1000 ? '₹' + (v/1000).toFixed(1) + 'K' : '₹' + v;
 let charts = [];
+let fullDataset = []; // Store original data for filtering
 
 function destroyCharts() { charts.forEach(c => c.destroy()); charts = []; }
 
@@ -316,6 +403,7 @@ fileInput.addEventListener('change', e => { if (e.target.files[0]) processFile(e
 
 function resetDashboard() {
   destroyCharts();
+  fullDataset = [];
   document.getElementById('dashboard').style.display = 'none';
   document.getElementById('upload-screen').style.display = 'flex';
   fileInput.value = '';
@@ -349,6 +437,80 @@ function processFile(file) {
   reader.readAsText(file);
 }
 
+function populateFilters() {
+  const years = new Set();
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  
+  fullDataset.forEach(r => {
+    if (!isNaN(r.date)) {
+      years.add(r.date.getFullYear());
+    }
+  });
+
+  const yearSelect = document.getElementById('yearFilter');
+  const sortedYears = Array.from(years).sort().reverse();
+  sortedYears.forEach(y => {
+    const opt = document.createElement('option');
+    opt.value = y;
+    opt.textContent = y;
+    yearSelect.appendChild(opt);
+  });
+}
+
+function getFilteredData() {
+  const yearVal = document.getElementById('yearFilter').value;
+  const monthVal = document.getElementById('monthFilter').value;
+  
+  return fullDataset.filter(r => {
+    if (isNaN(r.date)) return false;
+    const y = r.date.getFullYear().toString();
+    const m = (r.date.getMonth() + 1).toString().padStart(2, '0');
+    
+    if (yearVal && y !== yearVal) return false;
+    if (monthVal && m !== monthVal) return false;
+    return true;
+  });
+}
+
+function updateMonthFilter() {
+  const yearVal = document.getElementById('yearFilter').value;
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const availableMonths = new Set();
+
+  fullDataset.forEach(r => {
+    if (!isNaN(r.date)) {
+      const y = r.date.getFullYear().toString();
+      if (!yearVal || y === yearVal) {
+        availableMonths.add(r.date.getMonth());
+      }
+    }
+  });
+
+  const monthSelect = document.getElementById('monthFilter');
+  const currentMonth = monthSelect.value;
+  monthSelect.innerHTML = '<option value="">All months</option>';
+  
+  Array.from(availableMonths).sort().forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = (m + 1).toString().padStart(2, '0');
+    opt.textContent = months[m];
+    monthSelect.appendChild(opt);
+  });
+  
+  monthSelect.value = currentMonth && availableMonths.has(parseInt(currentMonth) - 1) ? currentMonth : '';
+}
+
+function applyFilters() {
+  updateMonthFilter();
+  renderDashboard(getFilteredData());
+}
+
+function clearFilters() {
+  document.getElementById('yearFilter').value = '';
+  document.getElementById('monthFilter').value = '';
+  renderDashboard(fullDataset);
+}
+
 function buildDashboard(data, filename) {
   destroyCharts();
 
@@ -363,6 +525,22 @@ function buildDashboard(data, filename) {
     customer: r.customer_type || r['customer type'] || ''
   })).filter(r => r.revenue > 0);
 
+  fullDataset = rows;
+  populateFilters();
+
+  // Build UI
+  document.getElementById('fileBadge').textContent = '● ' + filename;
+  document.getElementById('navSub').textContent = `${rows.length} records · 21CSS303T · SRM Institute`;
+  
+  document.getElementById('upload-screen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  
+  renderDashboard(rows);
+  window.scrollTo(0,0);
+}
+
+function renderDashboard(rows) {
+  destroyCharts();
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
   // Monthly aggregates
@@ -417,9 +595,9 @@ function buildDashboard(data, filename) {
   // KPIs
   const totalRev = rows.reduce((a,r) => a + r.revenue, 0);
   const totalUnits = rows.reduce((a,r) => a + r.qty, 0);
-  const avgDSI = (prodEntries.reduce((a,[,p]) => a + p.dsi, 0) / prodEntries.length).toFixed(2);
-  const maxMonth = activeMonths[activeRevs.indexOf(Math.max(...activeRevs))];
-  const maxRev = Math.max(...activeRevs);
+  const avgDSI = prodEntries.length > 0 ? (prodEntries.reduce((a,[,p]) => a + p.dsi, 0) / prodEntries.length).toFixed(2) : 0;
+  const maxMonth = activeMonths.length > 0 ? activeMonths[activeRevs.indexOf(Math.max(...activeRevs))] : 'N/A';
+  const maxRev = activeRevs.length > 0 ? Math.max(...activeRevs) : 0;
 
   // Insights
   const topCat = catEntries[0];
@@ -427,16 +605,13 @@ function buildDashboard(data, filename) {
   const dsiSorted = [...prodEntries].sort((a,b) => a[1].dsi - b[1].dsi);
   const lowestDSI = dsiSorted[0];
   const insightData = [
-    { label: 'Top category', text: `${topCat[0]} leads with ${fmt(topCat[1])} — ${Math.round(topCat[1]/totalRev*100)}% of total revenue` },
+    { label: 'Top category', text: topCat ? `${topCat[0]} leads with ${fmt(topCat[1])} — ${Math.round(topCat[1]/totalRev*100)}% of total revenue` : 'No data' },
     { label: 'Revenue peak', text: `${maxMonth} is highest at ${fmt(maxRev)} — likely seasonal demand spike` },
-    { label: 'Most volatile', text: `${lowestDSI[0]} has DSI ${lowestDSI[1].dsi} — erratic demand, seasonal product` },
-    { label: 'Top product', text: `${topProd[0]} drives ${fmt(topProd[1].rev)} with ${topProd[1].units} units sold` },
+    { label: 'Most volatile', text: lowestDSI ? `${lowestDSI[0]} has DSI ${lowestDSI[1].dsi} — erratic demand, seasonal product` : 'No data' },
+    { label: 'Top product', text: topProd ? `${topProd[0]} drives ${fmt(topProd[1].rev)} with ${topProd[1].units} units sold` : 'No data' },
   ];
 
-  // Build UI
-  document.getElementById('fileBadge').textContent = '● ' + filename;
-  document.getElementById('navSub').textContent = `${rows.length} records · 21CSS303T · SRM Institute`;
-  document.getElementById('periodNote').textContent = activeMonths[0] + ' – ' + activeMonths[activeMonths.length-1];
+  document.getElementById('periodNote').textContent = activeMonths.length > 0 ? activeMonths[0] + ' – ' + activeMonths[activeMonths.length-1] : 'No data';
 
   // Insights
   document.getElementById('insights').innerHTML = insightData.map(d =>
@@ -451,47 +626,57 @@ function buildDashboard(data, filename) {
     <div class="kpi"><div class="kpi-label">Avg DSI Score</div><div class="kpi-val">${avgDSI}</div><div class="kpi-sub">${parseFloat(avgDSI) >= 0.65 ? '<span class="up">High stability</span>' : '<span class="dn">Monitor demand</span>'}</div></div>
   `;
 
-  // Line chart
-  makeChart('c1', { type: 'line', data: { labels: activeMonths, datasets: [{
-    data: activeRevs, borderColor: '#185FA5', backgroundColor: 'rgba(24,95,165,0.07)',
-    tension: .38, pointRadius: 4, pointBackgroundColor: '#185FA5', fill: true
-  }]}, options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: c => ' ' + fmt(c.raw) }}},
-    scales: { y:{ ticks:{ callback: v => '₹'+Math.round(v/1000)+'K', font:{size:11} }, grid:{color:'rgba(0,0,0,0.05)'} }, x:{ ticks:{font:{size:11}}, grid:{display:false} } }
-  }});
+  if (activeRevs.length > 0) {
+    // Line chart
+    makeChart('c1', { type: 'line', data: { labels: activeMonths, datasets: [{
+      data: activeRevs, borderColor: '#185FA5', backgroundColor: 'rgba(24,95,165,0.07)',
+      tension: .38, pointRadius: 4, pointBackgroundColor: '#185FA5', fill: true
+    }]}, options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: c => ' ' + fmt(c.raw) }}},
+      scales: { y:{ ticks:{ callback: v => '₹'+Math.round(v/1000)+'K', font:{size:11} }, grid:{color:'rgba(0,0,0,0.05)'} }, x:{ ticks:{font:{size:11}}, grid:{display:false} } }
+    }});
+  }
 
-  // Donut chart
-  makeChart('c2', { type: 'doughnut', data: { labels: catEntries.map(c=>c[0]), datasets: [{
-    data: catEntries.map(c=>c[1]), backgroundColor: CAT_COLORS, borderWidth: 2, borderColor: '#fff'
-  }]}, options: { responsive:true, maintainAspectRatio:false, cutout:'62%', layout:{padding:8},
-    plugins:{ legend:{ position:'bottom', labels:{ font:{size:11}, padding:10, boxWidth:10 } },
-    tooltip:{ callbacks:{ label: c => ' '+fmt(c.raw)+' ('+Math.round(c.raw/totalRev*100)+'%)' }}}
-  }});
+  if (catEntries.length > 0) {
+    // Donut chart
+    makeChart('c2', { type: 'doughnut', data: { labels: catEntries.map(c=>c[0]), datasets: [{
+      data: catEntries.map(c=>c[1]), backgroundColor: CAT_COLORS, borderWidth: 2, borderColor: '#fff'
+    }]}, options: { responsive:true, maintainAspectRatio:false, cutout:'62%', layout:{padding:8},
+      plugins:{ legend:{ position:'bottom', labels:{ font:{size:11}, padding:10, boxWidth:10 } },
+      tooltip:{ callbacks:{ label: c => ' '+fmt(c.raw)+' ('+Math.round(c.raw/totalRev*100)+'%)' }}}
+    }});
+  }
 
-  // Bar chart units
-  makeChart('c3', { type: 'bar', data: { labels: activeMonths, datasets: [{
-    data: activeUnits, backgroundColor: '#1D9E75', borderRadius: 4, borderSkipped: false
-  }]}, options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
-    scales: { y:{ticks:{font:{size:11}}, grid:{color:'rgba(0,0,0,0.05)'}}, x:{ticks:{font:{size:11}},grid:{display:false}} }
-  }});
+  if (activeUnits.length > 0) {
+    // Bar chart units
+    makeChart('c3', { type: 'bar', data: { labels: activeMonths, datasets: [{
+      data: activeUnits, backgroundColor: '#1D9E75', borderRadius: 4, borderSkipped: false
+    }]}, options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+      scales: { y:{ticks:{font:{size:11}}, grid:{color:'rgba(0,0,0,0.05)'}}, x:{ticks:{font:{size:11}},grid:{display:false}} }
+    }});
+  }
 
   // Customer type bar
   const custEntries = Object.entries(custMap).sort((a,b)=>b[1]-a[1]);
-  makeChart('c4', { type: 'bar', data: { labels: custEntries.map(c=>c[0]), datasets: [{
-    data: custEntries.map(c=>c[1]), backgroundColor: ['#185FA5','#1D9E75','#BA7517'], borderRadius: 6
-  }]}, options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false},
-    tooltip:{callbacks:{label:c=>' '+fmt(c.raw)}}},
-    scales: { y:{ticks:{callback:v=>'₹'+Math.round(v/1000)+'K', font:{size:11}}, grid:{color:'rgba(0,0,0,0.05)'}}, x:{ticks:{font:{size:11}},grid:{display:false}} }
-  }});
+  if (custEntries.length > 0) {
+    makeChart('c4', { type: 'bar', data: { labels: custEntries.map(c=>c[0]), datasets: [{
+      data: custEntries.map(c=>c[1]), backgroundColor: ['#185FA5','#1D9E75','#BA7517'], borderRadius: 6
+    }]}, options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:c=>' '+fmt(c.raw)}}},
+      scales: { y:{ticks:{callback:v=>'₹'+Math.round(v/1000)+'K', font:{size:11}}, grid:{color:'rgba(0,0,0,0.05)'}}, x:{ticks:{font:{size:11}},grid:{display:false}} }
+    }});
+  }
 
   // Scatter
-  makeChart('c5', { type: 'scatter', data: { datasets: [{ label:'Products',
-    data: prodEntries.slice(0,12).map(([n,p]) => ({ x: Math.round(p.units), y: Math.round(p.rev), label: n })),
-    backgroundColor: '#185FA5', pointRadius: 6
-  }]}, options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false},
-    tooltip:{callbacks:{label:c=>c.raw.label+' | '+c.raw.x+' units | '+fmt(c.raw.y)}}},
-    scales: { x:{title:{display:true,text:'Units sold',font:{size:11}},ticks:{font:{size:11}},grid:{color:'rgba(0,0,0,0.05)'}},
-              y:{title:{display:true,text:'Revenue (₹)',font:{size:11}},ticks:{callback:v=>'₹'+Math.round(v/1000)+'K',font:{size:11}},grid:{color:'rgba(0,0,0,0.05)'}} }
-  }});
+  if (prodEntries.length > 0) {
+    makeChart('c5', { type: 'scatter', data: { datasets: [{ label:'Products',
+      data: prodEntries.slice(0,12).map(([n,p]) => ({ x: Math.round(p.units), y: Math.round(p.rev), label: n })),
+      backgroundColor: '#185FA5', pointRadius: 6
+    }]}, options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false},
+      tooltip:{callbacks:{label:c=>c.raw.label+' | '+c.raw.x+' units | '+fmt(c.raw.y)}}},
+      scales: { x:{title:{display:true,text:'Units sold',font:{size:11}},ticks:{font:{size:11}},grid:{color:'rgba(0,0,0,0.05)'}},
+                y:{title:{display:true,text:'Revenue (₹)',font:{size:11}},ticks:{callback:v=>'₹'+Math.round(v/1000)+'K',font:{size:11}},grid:{color:'rgba(0,0,0,0.05)'}} }
+    }});
+  }
 
   // DSI rows (top 8)
   const top8DSI = [...prodEntries].sort((a,b)=>b[1].dsi-a[1].dsi).slice(0,8);
