@@ -448,6 +448,7 @@ function populateFilters() {
   });
 
   const yearSelect = document.getElementById('yearFilter');
+  yearSelect.innerHTML = '<option value="">All years</option>';
   const sortedYears = Array.from(years).sort().reverse();
   sortedYears.forEach(y => {
     const opt = document.createElement('option');
