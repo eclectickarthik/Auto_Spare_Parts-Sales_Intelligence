@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auto Spare Parts — Sales Intelligence</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --surface2: #f0efe9;
+    --border: #e2e0d8;
+    --text: #1a1917;
+    --muted: #6b6960;
+    --hint: #9b9a93;
+    --blue: #185FA5;
+    --blue-light: #E6F1FB;
+    --blue-text: #0C447C;
+    --green: #1D9E75;
+    --green-light: #EAF3DE;
+    --green-text: #3B6D11;
+    --amber: #BA7517;
+    --amber-light: #FAEEDA;
+    --amber-text: #633806;
+    --red: #A32D2D;
+    --red-light: #FCEBEB;
+    --red-text: #791F1F;
+    --accent: #BA7517;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* ── Upload screen ── */
+  #upload-screen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  .upload-logo {
+    width: 52px; height: 52px;
+    background: var(--amber-light);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+  .upload-logo svg { width: 26px; height: 26px; }
+  .upload-screen h1 { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 6px; letter-spacing: -0.02em; }
+  .upload-screen p { font-size: 14px; color: var(--muted); margin-bottom: 2rem; text-align: center; }
+  .drop-zone {
+    width: 100%; max-width: 480px;
+    border: 2px dashed var(--border);
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+    background: var(--surface);
+  }
+  .drop-zone:hover, .drop-zone.drag { border-color: var(--amber); background: var(--amber-light); }
+  .drop-zone input { display: none; }
+  .drop-icon { font-size: 36px; margin-bottom: 12px; }
+  .drop-zone h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .drop-zone p { font-size: 13px; color: var(--muted); margin: 0; }
+  .browse-btn {
+    display: inline-block; margin-top: 16px;
+    background: var(--amber); color: white;
+    font-size: 13px; font-weight: 600;
+    padding: 9px 22px; border-radius: 8px; cursor: pointer;
+    border: none; transition: opacity .2s;
+  }
+  .browse-btn:hover { opacity: .88; }
+  .req-note { margin-top: 1.5rem; font-size: 12px; color: var(--hint); text-align: center; max-width: 400px; line-height: 1.6; }
+  .req-note strong { color: var(--muted); }
+
+  /* ── Dashboard ── */
+  #dashboard { display: none; }
+  .topnav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px; position: sticky; top: 0; z-index: 100;
+  }
+  .nav-left { display: flex; align-items: center; gap: 12px; }
+  .nav-logo {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--amber-light);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-logo svg { width: 16px; height: 16px; }
+  .nav-title { font-size: 14px; font-weight: 600; color: var(--text); }
+  .nav-sub { font-size: 12px; color: var(--muted); }
+  .nav-right { display: flex; align-items: center; gap: 10px; }
+  .file-badge {
+    font-size: 11px; background: var(--green-light); color: var(--green-text);
+    padding: 4px 10px; border-radius: 99px; font-weight: 500;
+  }
+  .reset-btn {
+    font-size: 12px; color: var(--muted); background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 7px;
+    padding: 5px 12px; cursor: pointer; font-weight: 500;
+    transition: background .15s;
+  }
+  .reset-btn:hover { background: var(--border); }
+
+  .dash-body { max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem 3rem; }
+
+  .insights { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 1.25rem; }
+  .insight {
+    background: var(--surface2); border-radius: 10px;
+    padding: .75rem 1rem; border-left: 3px solid var(--amber);
+  }
+  .insight-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--amber-text); margin-bottom: 3px; }
+  .insight-text { font-size: 12px; color: var(--text); line-height: 1.45; }
+
+  .kpis { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 1.25rem; }
+  .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.2rem; }
+  .kpi-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 8px; }
+  .kpi-val { font-size: 26px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+  .kpi-sub { font-size: 12px; color: var(--muted); margin-top: 5px; display: flex; align-items: center; gap: 4px; }
+  .up { color: var(--green-text); font-weight: 600; }
+  .dn { color: var(--red-text); font-weight: 600; }
+
+  .row2 { display: grid; grid-template-columns: 1.6fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.2rem 1.4rem; }
+  .card-hd { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1rem; }
+  .card-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .card-note { font-size: 11px; color: var(--hint); }
+  .ch { position: relative; width: 100%; }
+
+  .dsi-rows { display: flex; flex-direction: column; gap: 9px; }
+  .dsi-row { display: grid; grid-template-columns: 1fr 44px 110px; align-items: center; gap: 10px; }
+  .dsi-name { font-size: 12px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dsi-num { font-size: 13px; font-weight: 700; text-align: right; }
+  .dsi-track { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .dsi-fill { height: 5px; border-radius: 3px; }
+  .pill { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 99px; }
+  .pill-h { background: var(--green-light); color: var(--green-text); }
+  .pill-m { background: var(--amber-light); color: var(--amber-text); }
+  .pill-l { background: var(--red-light); color: var(--red-text); }
+
+  .tbl-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 8px 10px; font-size: 10px; font-weight: 700; color: var(--muted); border-bottom: 1px solid var(--border); text-transform: uppercase; letter-spacing: .06em; }
+  td { padding: 9px 10px; border-bottom: 1px solid var(--border); color: var(--text); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface2); }
+  .rank { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 5px; font-size: 10px; font-weight: 700; background: var(--surface2); color: var(--muted); }
+
+  .legend { display: flex; gap: 14px; margin-bottom: 10px; }
+  .leg-i { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
+  .leg-sq { width: 9px; height: 9px; border-radius: 2px; }
+  .leg-dash { width: 16px; height: 0; border-top: 2px dashed var(--amber); }
+
+  .section-label {
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+    color: var(--hint); margin-bottom: 8px; margin-top: 1.5rem;
+  }
+
+  /* ── Loading ── */
+  #loading {
+    display: none; position: fixed; inset: 0;
+    background: rgba(245,244,240,.85);
+    align-items: center; justify-content: center;
+    flex-direction: column; gap: 12px; z-index: 999;
+  }
+  .spinner {
+    width: 36px; height: 36px; border: 3px solid var(--border);
+    border-top-color: var(--amber); border-radius: 50%;
+    animation: spin .7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading p { font-size: 13px; color: var(--muted); font-weight: 500; }
+
+  @media (max-width: 768px) {
+    .kpis, .insights { grid-template-columns: repeat(2,1fr); }
+    .row2, .row3 { grid-template-columns: 1fr; }
+    .dash-body { padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div id="loading">
+  <div class="spinner"></div>
+  <p>Processing your dataset…</p>
+</div>
+
+<!-- Upload Screen -->
+<div id="upload-screen">
+  <div class="upload-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#BA7517" stroke-width="2" stroke-linecap="round">
+      <path d="M12 2L12 14M8 10l4-4 4 4"/><rect x="3" y="16" width="18" height="6" rx="2"/>
+    </svg>
+  </div>
+  <h1>Auto Spare Parts — Sales Intelligence</h1>
+  <p>Upload your dataset CSV to generate the full analytics dashboard</p>
+
+  <div class="drop-zone" id="dropZone">
+    <input type="file" id="fileInput" accept=".csv">
+    <div class="drop-icon">📂</div>
+    <h3>Drop your CSV file here</h3>
+    <p>or click the button below to browse</p>
+    <label for="fileInput" class="browse-btn">Browse File</label>
+  </div>
+
+  <p class="req-note">
+    <strong>Expected columns:</strong> date, product_name, category, quantity, unit_price, total_amount, customer_type<br>
+    Minimum 200 records · Course: 21CSS303T
+  </p>
+</div>
+
+<!-- Dashboard -->
+<div id="dashboard">
+  <nav class="topnav">
+    <div class="nav-left">
+      <div class="nav-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#BA7517" stroke-width="2.2" stroke-linecap="round">
+          <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/>
+        </svg>
+      </div>
+      <div>
+        <div class="nav-title">Auto Spare Parts · Sales Intelligence</div>
+        <div class="nav-sub" id="navSub">21CSS303T · SRM Institute</div>
+      </div>
+    </div>
+    <div class="nav-right">
+      <span class="file-badge" id="fileBadge">● File loaded</span>
+      <button class="reset-btn" onclick="resetDashboard()">↩ Upload another</button>
+    </div>
+  </nav>
+
+  <div class="dash-body">
+    <div class="section-label">Key findings</div>
+    <div class="insights" id="insights"></div>
+
+    <div class="section-label">KPI summary</div>
+    <div class="kpis" id="kpis"></div>
+
+    <div class="section-label">Revenue analysis</div>
+    <div class="row2">
+      <div class="card">
+        <div class="card-hd"><span class="card-title">Monthly revenue trend (₹)</span><span class="card-note" id="periodNote"></span></div>
+        <div class="legend">
+          <span class="leg-i"><span class="leg-sq" style="background:#185FA5"></span>2024 revenue</span>
+        </div>
+        <div class="ch" style="height:200px"><canvas id="c1"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><span class="card-title">Revenue by category</span><span class="card-note">share %</span></div>
+        <div class="ch" style="height:230px"><canvas id="c2"></canvas></div>
+      </div>
+    </div>
+
+    <div class="section-label">Volume & stability</div>
+    <div class="row3">
+      <div class="card">
+        <div class="card-hd"><span class="card-title">Demand Stability Index</span><span class="card-note">DSI = 1 − (σ/μ)</span></div>
+        <div class="dsi-rows" id="dsiRows"></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><span class="card-title">Monthly units sold</span><span class="card-note">transaction volume</span></div>
+        <div class="ch" style="height:220px"><canvas id="c3"></canvas></div>
+      </div>
+    </div>
+
+    <div class="section-label">Product performance</div>
+    <div class="card">
+      <div class="card-hd"><span class="card-title">Top products — full summary</span></div>
+      <div class="tbl-wrap"><table><thead><tr><th>#</th><th>Product</th><th>Category</th><th>Revenue</th><th>Units</th><th>Transactions</th><th>DSI</th><th>Stability</th></tr></thead><tbody id="ptable"></tbody></table></div>
+    </div>
+
+    <div class="section-label">Distribution analysis</div>
+    <div class="row3">
+      <div class="card">
+        <div class="card-hd"><span class="card-title">Revenue by customer type</span></div>
+        <div class="ch" style="height:200px"><canvas id="c4"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><span class="card-title">Revenue vs units (scatter)</span></div>
+        <div class="ch" style="height:200px"><canvas id="c5"></canvas></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const CAT_COLORS = ['#185FA5','#1D9E75','#534AB7','#BA7517','#D85A30','#888780','#993556','#085041'];
+const fmt = v => v >= 100000 ? '₹' + (v/100000).toFixed(2) + 'L' : v >= 1000 ? '₹' + (v/1000).toFixed(1) + 'K' : '₹' + v;
+let charts = [];
+
+function destroyCharts() { charts.forEach(c => c.destroy()); charts = []; }
+
+function makeChart(id, cfg) {
+  const c = new Chart(document.getElementById(id), cfg);
+  charts.push(c); return c;
+}
+
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault(); dropZone.classList.remove('drag');
+  const file = e.dataTransfer.files[0];
+  if (file && file.name.endsWith('.csv')) processFile(file);
+});
+fileInput.addEventListener('change', e => { if (e.target.files[0]) processFile(e.target.files[0]); });
+
+function resetDashboard() {
+  destroyCharts();
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('upload-screen').style.display = 'flex';
+  fileInput.value = '';
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const header = lines[0].split(',').map(h => h.trim().replace(/"/g,'').toLowerCase());
+  return lines.slice(1).filter(l => l.trim()).map(line => {
+    const vals = line.split(',').map(v => v.trim().replace(/"/g,''));
+    const row = {};
+    header.forEach((h,i) => row[h] = vals[i] || '');
+    return row;
+  });
+}
+
+function processFile(file) {
+  document.getElementById('loading').style.display = 'flex';
+  const reader = new FileReader();
+  reader.onload = e => {
+    setTimeout(() => {
+      try {
+        const data = parseCSV(e.target.result);
+        buildDashboard(data, file.name);
+      } catch(err) {
+        alert('Error parsing CSV: ' + err.message);
+      }
+      document.getElementById('loading').style.display = 'none';
+    }, 400);
+  };
+  reader.readAsText(file);
+}
+
+function buildDashboard(data, filename) {
+  destroyCharts();
+
+  // Parse & clean
+  const rows = data.map(r => ({
+    date: new Date(r.date ? r.date.split('-').reverse().join('-') : ''),
+    product: r.product_name || r['product name'] || '',
+    category: r.category || '',
+    qty: parseInt(r.quantity) || 0,
+    price: parseFloat(r.unit_price) || 0,
+    revenue: parseFloat(r.total_amount) || 0,
+    customer: r.customer_type || r['customer type'] || ''
+  })).filter(r => r.revenue > 0);
+
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  // Monthly aggregates
+  const monthlyRev = Array(12).fill(0);
+  const monthlyUnits = Array(12).fill(0);
+  rows.forEach(r => {
+    if (!isNaN(r.date)) {
+      const m = r.date.getMonth();
+      monthlyRev[m] += r.revenue;
+      monthlyUnits[m] += r.qty;
+    }
+  });
+  const activeMonths = months.filter((_,i) => monthlyRev[i] > 0);
+  const activeRevs = monthlyRev.filter(v => v > 0);
+  const activeUnits = monthlyUnits.filter((_,i) => monthlyRev[i] > 0);
+
+  // Category aggregates
+  const catMap = {};
+  rows.forEach(r => {
+    if (!catMap[r.category]) catMap[r.category] = 0;
+    catMap[r.category] += r.revenue;
+  });
+  const catEntries = Object.entries(catMap).sort((a,b) => b[1]-a[1]);
+
+  // Product aggregates
+  const prodMap = {};
+  rows.forEach(r => {
+    if (!prodMap[r.product]) prodMap[r.product] = {cat: r.category, rev: 0, units: 0, txns: 0, monthlyUnits: Array(12).fill(0)};
+    prodMap[r.product].rev += r.revenue;
+    prodMap[r.product].units += r.qty;
+    prodMap[r.product].txns++;
+    if (!isNaN(r.date)) prodMap[r.product].monthlyUnits[r.date.getMonth()] += r.qty;
+  });
+
+  // DSI calculation
+  const prodEntries = Object.entries(prodMap).sort((a,b) => b[1].rev - a[1].rev).slice(0, 15);
+  prodEntries.forEach(([, p]) => {
+    const vals = p.monthlyUnits.filter(v => v > 0);
+    if (vals.length < 2) { p.dsi = 0.5; return; }
+    const mean = vals.reduce((a,b) => a+b, 0) / vals.length;
+    const std = Math.sqrt(vals.map(v => (v-mean)**2).reduce((a,b) => a+b, 0) / vals.length);
+    p.dsi = mean > 0 ? Math.max(0, Math.min(1, parseFloat((1 - std/mean).toFixed(2)))) : 0;
+  });
+
+  // Customer type
+  const custMap = {};
+  rows.forEach(r => {
+    if (!custMap[r.customer]) custMap[r.customer] = 0;
+    custMap[r.customer] += r.revenue;
+  });
+
+  // KPIs
+  const totalRev = rows.reduce((a,r) => a + r.revenue, 0);
+  const totalUnits = rows.reduce((a,r) => a + r.qty, 0);
+  const avgDSI = (prodEntries.reduce((a,[,p]) => a + p.dsi, 0) / prodEntries.length).toFixed(2);
+  const maxMonth = activeMonths[activeRevs.indexOf(Math.max(...activeRevs))];
+  const maxRev = Math.max(...activeRevs);
+
+  // Insights
+  const topCat = catEntries[0];
+  const topProd = prodEntries[0];
+  const dsiSorted = [...prodEntries].sort((a,b) => a[1].dsi - b[1].dsi);
+  const lowestDSI = dsiSorted[0];
+  const insightData = [
+    { label: 'Top category', text: `${topCat[0]} leads with ${fmt(topCat[1])} — ${Math.round(topCat[1]/totalRev*100)}% of total revenue` },
+    { label: 'Revenue peak', text: `${maxMonth} is highest at ${fmt(maxRev)} — likely seasonal demand spike` },
+    { label: 'Most volatile', text: `${lowestDSI[0]} has DSI ${lowestDSI[1].dsi} — erratic demand, seasonal product` },
+    { label: 'Top product', text: `${topProd[0]} drives ${fmt(topProd[1].rev)} with ${topProd[1].units} units sold` },
+  ];
+
+  // Build UI
+  document.getElementById('fileBadge').textContent = '● ' + filename;
+  document.getElementById('navSub').textContent = `${rows.length} records · 21CSS303T · SRM Institute`;
+  document.getElementById('periodNote').textContent = activeMonths[0] + ' – ' + activeMonths[activeMonths.length-1];
+
+  // Insights
+  document.getElementById('insights').innerHTML = insightData.map(d =>
+    `<div class="insight"><div class="insight-label">${d.label}</div><div class="insight-text">${d.text}</div></div>`
+  ).join('');
+
+  // KPIs
+  document.getElementById('kpis').innerHTML = `
+    <div class="kpi"><div class="kpi-label">Total Revenue</div><div class="kpi-val">${fmt(totalRev)}</div><div class="kpi-sub">${rows.length} transactions</div></div>
+    <div class="kpi"><div class="kpi-label">Total Units Sold</div><div class="kpi-val">${totalUnits.toLocaleString()}</div><div class="kpi-sub">across ${Object.keys(prodMap).length} products</div></div>
+    <div class="kpi"><div class="kpi-label">Peak Month</div><div class="kpi-val">${maxMonth}</div><div class="kpi-sub">${fmt(maxRev)} revenue</div></div>
+    <div class="kpi"><div class="kpi-label">Avg DSI Score</div><div class="kpi-val">${avgDSI}</div><div class="kpi-sub">${parseFloat(avgDSI) >= 0.65 ? '<span class="up">High stability</span>' : '<span class="dn">Monitor demand</span>'}</div></div>
+  `;
+
+  // Line chart
+  makeChart('c1', { type: 'line', data: { labels: activeMonths, datasets: [{
+    data: activeRevs, borderColor: '#185FA5', backgroundColor: 'rgba(24,95,165,0.07)',
+    tension: .38, pointRadius: 4, pointBackgroundColor: '#185FA5', fill: true
+  }]}, options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: c => ' ' + fmt(c.raw) }}},
+    scales: { y:{ ticks:{ callback: v => '₹'+Math.round(v/1000)+'K', font:{size:11} }, grid:{color:'rgba(0,0,0,0.05)'} }, x:{ ticks:{font:{size:11}}, grid:{display:false} } }
+  }});
+
+  // Donut chart
+  makeChart('c2', { type: 'doughnut', data: { labels: catEntries.map(c=>c[0]), datasets: [{
+    data: catEntries.map(c=>c[1]), backgroundColor: CAT_COLORS, borderWidth: 2, borderColor: '#fff'
+  }]}, options: { responsive:true, maintainAspectRatio:false, cutout:'62%', layout:{padding:8},
+    plugins:{ legend:{ position:'bottom', labels:{ font:{size:11}, padding:10, boxWidth:10 } },
+    tooltip:{ callbacks:{ label: c => ' '+fmt(c.raw)+' ('+Math.round(c.raw/totalRev*100)+'%)' }}}
+  }});
+
+  // Bar chart units
+  makeChart('c3', { type: 'bar', data: { labels: activeMonths, datasets: [{
+    data: activeUnits, backgroundColor: '#1D9E75', borderRadius: 4, borderSkipped: false
+  }]}, options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+    scales: { y:{ticks:{font:{size:11}}, grid:{color:'rgba(0,0,0,0.05)'}}, x:{ticks:{font:{size:11}},grid:{display:false}} }
+  }});
+
+  // Customer type bar
+  const custEntries = Object.entries(custMap).sort((a,b)=>b[1]-a[1]);
+  makeChart('c4', { type: 'bar', data: { labels: custEntries.map(c=>c[0]), datasets: [{
+    data: custEntries.map(c=>c[1]), backgroundColor: ['#185FA5','#1D9E75','#BA7517'], borderRadius: 6
+  }]}, options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false},
+    tooltip:{callbacks:{label:c=>' '+fmt(c.raw)}}},
+    scales: { y:{ticks:{callback:v=>'₹'+Math.round(v/1000)+'K', font:{size:11}}, grid:{color:'rgba(0,0,0,0.05)'}}, x:{ticks:{font:{size:11}},grid:{display:false}} }
+  }});
+
+  // Scatter
+  makeChart('c5', { type: 'scatter', data: { datasets: [{ label:'Products',
+    data: prodEntries.slice(0,12).map(([n,p]) => ({ x: Math.round(p.units), y: Math.round(p.rev), label: n })),
+    backgroundColor: '#185FA5', pointRadius: 6
+  }]}, options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false},
+    tooltip:{callbacks:{label:c=>c.raw.label+' | '+c.raw.x+' units | '+fmt(c.raw.y)}}},
+    scales: { x:{title:{display:true,text:'Units sold',font:{size:11}},ticks:{font:{size:11}},grid:{color:'rgba(0,0,0,0.05)'}},
+              y:{title:{display:true,text:'Revenue (₹)',font:{size:11}},ticks:{callback:v=>'₹'+Math.round(v/1000)+'K',font:{size:11}},grid:{color:'rgba(0,0,0,0.05)'}} }
+  }});
+
+  // DSI rows (top 8)
+  const top8DSI = [...prodEntries].sort((a,b)=>b[1].dsi-a[1].dsi).slice(0,8);
+  document.getElementById('dsiRows').innerHTML = top8DSI.map(([name, p]) => {
+    const c = p.dsi >= .75 ? '#185FA5' : p.dsi >= .55 ? '#BA7517' : '#A32D2D';
+    const pill = p.dsi >= .75 ? 'pill-h' : p.dsi >= .55 ? 'pill-m' : 'pill-l';
+    const label = p.dsi >= .75 ? 'High' : p.dsi >= .55 ? 'Medium' : 'Low';
+    return `<div class="dsi-row">
+      <div class="dsi-name" title="${name}">${name}</div>
+      <div class="dsi-num" style="color:${c}">${p.dsi.toFixed(2)}</div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <div class="dsi-track" style="flex:1"><div class="dsi-fill" style="width:${p.dsi*100}%;background:${c}"></div></div>
+        <span class="pill ${pill}">${label}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Product table
+  document.getElementById('ptable').innerHTML = prodEntries.map(([name,p],i) => {
+    const pill = p.dsi>=.75?'pill-h':p.dsi>=.55?'pill-m':'pill-l';
+    const label = p.dsi>=.75?'High':p.dsi>=.55?'Medium':'Low';
+    return `<tr>
+      <td><span class="rank">${i+1}</span></td>
+      <td style="font-weight:600;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${name}</td>
+      <td style="color:var(--muted)">${p.cat}</td>
+      <td style="font-weight:600">${fmt(p.rev)}</td>
+      <td>${p.units}</td>
+      <td>${p.txns}</td>
+      <td style="font-weight:700">${p.dsi.toFixed(2)}</td>
+      <td><span class="pill ${pill}">${label}</span></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('upload-screen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

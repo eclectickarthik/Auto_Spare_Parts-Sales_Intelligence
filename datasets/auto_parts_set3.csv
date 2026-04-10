@@ -1,0 +1,241 @@
+date,product_name,category,quantity,unit_price,total_amount,customer_type
+01-07-2024,Engine Oil 10W40 (1L),Consumables,2,381,762,Retail
+01-07-2024,NGK Air Filter,Filters,6,187,1122,Workshop
+01-07-2024,Valve Seal Kit,Engine Parts,2,650,1300,Workshop
+01-07-2024,Radiator Hose Lower,Engine Parts,6,326,1956,Workshop
+01-08-2024,Coolant (500ml),Consumables,1,206,206,Retail
+01-08-2024,NGK Air Filter,Filters,3,194,582,Retail
+01-08-2024,Valve Seal Kit,Engine Parts,2,596,1192,Workshop
+01-08-2024,Engine Oil 10W40 (1L),Consumables,2,389,778,Retail
+01-09-2024,Wheel Balancing Weight Set,Tyres & Wheels,3,115,345,Retail
+01-09-2024,Bumper Clip Set,Body Parts,7,117,819,Workshop
+01-09-2024,CEAT Tyre 155/70R13,Tyres & Wheels,3,2940,8820,Workshop
+01-09-2024,Bosch Oil Filter,Filters,3,140,420,Retail
+01-09-2024,Wiper Blade 14inch,Body Parts,3,269,807,Retail
+02-07-2024,Bosch Brake Pads (Front),Engine Parts,2,803,1606,Retail
+02-07-2024,Wiper Blade 14inch,Body Parts,2,216,432,Retail
+02-07-2024,Champion Spark Plug,Engine Parts,7,118,826,Workshop
+02-08-2024,NGK Spark Plug,Engine Parts,8,112,896,Workshop
+02-09-2024,Wiper Blade 14inch,Body Parts,3,264,792,Workshop
+02-09-2024,Lucas Battery 35AH,Electrical,7,3327,23289,Fleet
+03-07-2024,MRF Tyre 165/70R14,Tyres & Wheels,3,3505,10515,Retail
+03-08-2024,Engine Oil 5W30 (1L),Consumables,2,450,900,Retail
+03-08-2024,Bosch Brake Pads (Rear),Engine Parts,5,698,3490,Workshop
+03-08-2024,Brake Fluid DOT3,Consumables,3,145,435,Workshop
+03-08-2024,Bearing Rear Wheel,Engine Parts,2,681,1362,Retail
+03-09-2024,Wiper Blade 16inch,Body Parts,2,215,430,Retail
+03-09-2024,Chain Lubricant,Consumables,6,90,540,Workshop
+03-09-2024,Piston Ring Set,Engine Parts,13,2610,33930,Fleet
+04-07-2024,Champion Spark Plug,Engine Parts,1,118,118,Retail
+04-07-2024,Fuel Filter,Filters,7,220,1540,Fleet
+04-07-2024,Cabin Air Filter,Filters,8,298,2384,Workshop
+04-07-2024,Piston Ring Set,Engine Parts,7,2403,16821,Workshop
+04-08-2024,Clutch Plate Set,Engine Parts,1,2224,2224,Retail
+04-08-2024,Headlight Bulb H4,Electrical,1,191,191,Retail
+04-08-2024,Starter Motor Brush Set,Electrical,8,343,2744,Fleet
+04-09-2024,Piston Ring Set,Engine Parts,1,2231,2231,Retail
+04-09-2024,Exide Battery 35AH,Electrical,1,3792,3792,Retail
+05-07-2024,Bumper Clip Set,Body Parts,6,128,768,Workshop
+05-08-2024,Clutch Plate Set,Engine Parts,4,2278,9112,Workshop
+05-08-2024,CEAT Tyre 155/70R13,Tyres & Wheels,3,2725,8175,Retail
+05-09-2024,CEAT Tyre 155/70R13,Tyres & Wheels,2,2894,5788,Workshop
+06-07-2024,Side Mirror (Left),Body Parts,3,573,1719,Retail
+06-07-2024,NGK Air Filter,Filters,2,245,490,Retail
+06-07-2024,Alternator Belt,Electrical,3,267,801,Workshop
+06-08-2024,Tube 165/70R14,Tyres & Wheels,3,364,1092,Workshop
+06-09-2024,Radiator Hose Upper,Engine Parts,3,450,1350,Retail
+06-09-2024,Bumper Clip Set,Body Parts,3,140,420,Retail
+06-09-2024,Coolant (500ml),Consumables,4,211,844,Workshop
+06-09-2024,Grease Cartridge,Consumables,1,76,76,Retail
+07-07-2024,Hydraulic Filter,Filters,8,348,2784,Workshop
+07-09-2024,Bosch Oil Filter,Filters,1,148,148,Retail
+07-09-2024,Timing Belt Kit,Engine Parts,2,1372,2744,Retail
+07-09-2024,Tube 165/70R14,Tyres & Wheels,1,387,387,Retail
+08-08-2024,Brake Fluid DOT3,Consumables,1,138,138,Retail
+08-08-2024,Amaron Battery 45AH,Electrical,7,4242,29694,Workshop
+08-08-2024,Hydraulic Filter,Filters,6,372,2232,Workshop
+08-09-2024,Bosch Brake Pads (Rear),Engine Parts,2,664,1328,Retail
+08-09-2024,Engine Oil 5W30 (1L),Consumables,2,462,924,Retail
+08-09-2024,Piston Ring Set,Engine Parts,15,2780,41700,Fleet
+08-09-2024,Clutch Plate Set,Engine Parts,13,2160,28080,Fleet
+08-09-2024,Headlight Bulb H4,Electrical,2,201,402,Retail
+09-07-2024,Valve Seal Kit,Engine Parts,1,458,458,Retail
+09-07-2024,Alternator Belt,Electrical,2,327,654,Retail
+09-07-2024,NGK Spark Plug,Engine Parts,2,121,242,Retail
+09-07-2024,Grease Cartridge,Consumables,1,79,79,Retail
+09-09-2024,Engine Oil 10W40 (1L),Consumables,1,426,426,Retail
+09-09-2024,Bearing Rear Wheel,Engine Parts,3,785,2355,Workshop
+09-09-2024,Piston Ring Set,Engine Parts,1,2836,2836,Retail
+09-09-2024,Engine Oil 5W30 (1L),Consumables,5,432,2160,Workshop
+10-07-2024,Headlight Bulb H4,Electrical,1,219,219,Retail
+10-07-2024,Timing Belt Kit,Engine Parts,10,1503,15030,Fleet
+10-07-2024,Hydraulic Filter,Filters,1,362,362,Retail
+10-08-2024,NGK Air Filter,Filters,3,216,648,Retail
+10-08-2024,Side Mirror (Left),Body Parts,4,535,2140,Workshop
+10-09-2024,Wiper Blade 14inch,Body Parts,4,230,920,Retail
+10-09-2024,Bearing Front Wheel,Engine Parts,2,721,1442,Retail
+10-09-2024,Door Handle (Front),Body Parts,4,528,2112,Workshop
+10-09-2024,MRF Tyre 165/70R14,Tyres & Wheels,2,3664,7328,Retail
+11-07-2024,Amaron Battery 45AH,Electrical,4,4707,18828,Workshop
+11-08-2024,Fuel Filter,Filters,1,171,171,Retail
+11-08-2024,MRF Tyre 165/70R14,Tyres & Wheels,3,3379,10137,Workshop
+11-08-2024,Bosch Brake Pads (Front),Engine Parts,7,860,6020,Workshop
+11-08-2024,Bosch Oil Filter,Filters,2,167,334,Retail
+11-08-2024,Amaron Battery 45AH,Electrical,1,4635,4635,Retail
+11-09-2024,Bumper Clip Set,Body Parts,3,140,420,Retail
+11-09-2024,Fuel Filter,Filters,2,217,434,Retail
+11-09-2024,Clutch Plate Set,Engine Parts,15,2196,32940,Fleet
+11-09-2024,MRF Tyre 165/70R14,Tyres & Wheels,2,3555,7110,Retail
+11-09-2024,Clutch Plate Set,Engine Parts,1,2137,2137,Retail
+11-09-2024,Engine Oil 10W40 (1L),Consumables,2,392,784,Retail
+11-09-2024,Hydraulic Filter,Filters,2,346,692,Retail
+11-09-2024,Door Handle (Front),Body Parts,1,373,373,Retail
+11-09-2024,Apollo Tyre 185/65R15,Tyres & Wheels,3,4294,12882,Retail
+12-07-2024,Wiper Blade 14inch,Body Parts,2,195,390,Retail
+12-07-2024,Bearing Front Wheel,Engine Parts,1,710,710,Retail
+12-07-2024,Chain Lubricant,Consumables,4,102,408,Workshop
+12-07-2024,Indicator Bulb Set,Electrical,8,94,752,Workshop
+12-08-2024,Grease Cartridge,Consumables,2,101,202,Workshop
+12-08-2024,Side Mirror (Left),Body Parts,3,697,2091,Retail
+12-08-2024,Alternator Belt,Electrical,15,274,4110,Fleet
+12-09-2024,Engine Oil 5W30 (1L),Consumables,10,474,4740,Fleet
+13-08-2024,Engine Oil 10W40 (1L),Consumables,1,431,431,Retail
+13-08-2024,Timing Belt Kit,Engine Parts,2,1251,2502,Retail
+13-08-2024,Engine Oil 10W40 (1L),Consumables,2,429,858,Retail
+13-09-2024,Champion Spark Plug,Engine Parts,15,110,1650,Fleet
+13-09-2024,Door Handle (Front),Body Parts,3,381,1143,Workshop
+14-07-2024,Bearing Front Wheel,Engine Parts,2,653,1306,Retail
+14-07-2024,Radiator Hose Lower,Engine Parts,3,332,996,Workshop
+14-07-2024,CEAT Tyre 155/70R13,Tyres & Wheels,1,2872,2872,Retail
+14-07-2024,Bearing Rear Wheel,Engine Parts,2,728,1456,Retail
+14-09-2024,Radiator Hose Lower,Engine Parts,5,470,2350,Workshop
+15-07-2024,Wheel Balancing Weight Set,Tyres & Wheels,4,130,520,Workshop
+15-08-2024,Bearing Rear Wheel,Engine Parts,10,708,7080,Fleet
+15-08-2024,Door Handle (Front),Body Parts,7,448,3136,Workshop
+15-08-2024,Lucas Battery 35AH,Electrical,2,2900,5800,Retail
+15-08-2024,Bosch Brake Pads (Rear),Engine Parts,1,711,711,Retail
+15-08-2024,Coolant (500ml),Consumables,1,220,220,Retail
+15-09-2024,Amaron Battery 45AH,Electrical,8,4203,33624,Workshop
+16-07-2024,NGK Air Filter,Filters,4,221,884,Workshop
+16-07-2024,Headlight Bulb H4,Electrical,3,217,651,Workshop
+16-08-2024,Bumper Clip Set,Body Parts,1,128,128,Retail
+16-08-2024,Valve Seal Kit,Engine Parts,3,579,1737,Workshop
+16-08-2024,Chain Lubricant,Consumables,2,127,254,Retail
+16-09-2024,Alternator Belt,Electrical,14,322,4508,Fleet
+16-09-2024,Brake Fluid DOT3,Consumables,7,125,875,Workshop
+16-09-2024,Indicator Bulb Set,Electrical,2,88,176,Retail
+17-07-2024,Bearing Rear Wheel,Engine Parts,3,681,2043,Retail
+17-07-2024,Timing Belt Kit,Engine Parts,8,1397,11176,Workshop
+17-07-2024,Wheel Balancing Weight Set,Tyres & Wheels,2,102,204,Retail
+17-07-2024,Bumper Clip Set,Body Parts,2,87,174,Retail
+17-07-2024,Tube 165/70R14,Tyres & Wheels,4,500,2000,Workshop
+17-07-2024,Wiper Blade 16inch,Body Parts,4,287,1148,Retail
+17-07-2024,Radiator Hose Upper,Engine Parts,2,475,950,Retail
+17-08-2024,Apollo Tyre 185/65R15,Tyres & Wheels,2,3802,7604,Retail
+17-08-2024,Lucas Battery 35AH,Electrical,3,2870,8610,Workshop
+17-08-2024,Alternator Belt,Electrical,1,257,257,Retail
+17-08-2024,Bosch Brake Pads (Rear),Engine Parts,1,669,669,Retail
+17-08-2024,Engine Oil 10W40 (1L),Consumables,2,397,794,Retail
+17-09-2024,Grease Cartridge,Consumables,13,95,1235,Fleet
+17-09-2024,Indicator Bulb Set,Electrical,2,84,168,Retail
+17-09-2024,Side Mirror (Left),Body Parts,4,488,1952,Workshop
+18-08-2024,Starter Motor Brush Set,Electrical,3,437,1311,Retail
+18-08-2024,Bosch Brake Pads (Rear),Engine Parts,1,815,815,Retail
+18-08-2024,Lucas Battery 35AH,Electrical,2,3147,6294,Retail
+18-08-2024,Hydraulic Filter,Filters,2,371,742,Retail
+18-08-2024,CEAT Tyre 155/70R13,Tyres & Wheels,15,3007,45105,Fleet
+18-08-2024,Cabin Air Filter,Filters,2,266,532,Retail
+18-09-2024,Indicator Bulb Set,Electrical,7,78,546,Workshop
+18-09-2024,Hydraulic Filter,Filters,8,296,2368,Fleet
+19-08-2024,Wheel Balancing Weight Set,Tyres & Wheels,4,109,436,Workshop
+19-08-2024,Timing Belt Kit,Engine Parts,1,1420,1420,Retail
+19-09-2024,Cabin Air Filter,Filters,1,269,269,Retail
+20-07-2024,Chain Lubricant,Consumables,5,108,540,Workshop
+20-07-2024,Radiator Hose Upper,Engine Parts,1,458,458,Retail
+20-08-2024,Indicator Bulb Set,Electrical,9,92,828,Fleet
+20-08-2024,Bosch Oil Filter,Filters,2,127,254,Retail
+20-08-2024,Coolant (500ml),Consumables,3,180,540,Retail
+20-08-2024,Engine Oil 5W30 (1L),Consumables,2,420,840,Retail
+20-08-2024,MRF Tyre 165/70R14,Tyres & Wheels,1,3292,3292,Retail
+20-08-2024,Wiper Blade 16inch,Body Parts,4,203,812,Retail
+20-09-2024,Indicator Bulb Set,Electrical,12,77,924,Fleet
+20-09-2024,Side Mirror (Left),Body Parts,4,534,2136,Workshop
+21-07-2024,Exide Battery 35AH,Electrical,3,3620,10860,Retail
+21-07-2024,CEAT Tyre 155/70R13,Tyres & Wheels,1,2733,2733,Retail
+21-08-2024,Engine Oil 10W40 (1L),Consumables,2,390,780,Retail
+21-09-2024,Engine Oil 5W30 (1L),Consumables,2,434,868,Retail
+21-09-2024,CEAT Tyre 155/70R13,Tyres & Wheels,3,2726,8178,Retail
+21-09-2024,Cabin Air Filter,Filters,10,203,2030,Fleet
+21-09-2024,CEAT Tyre 155/70R13,Tyres & Wheels,2,3187,6374,Workshop
+21-09-2024,Radiator Hose Lower,Engine Parts,1,414,414,Retail
+22-07-2024,Amaron Battery 45AH,Electrical,8,4668,37344,Workshop
+22-07-2024,Radiator Hose Lower,Engine Parts,14,323,4522,Fleet
+22-07-2024,Bearing Rear Wheel,Engine Parts,2,650,1300,Workshop
+22-07-2024,Side Mirror (Left),Body Parts,5,586,2930,Workshop
+22-07-2024,NGK Spark Plug,Engine Parts,14,108,1512,Fleet
+22-08-2024,Champion Spark Plug,Engine Parts,3,111,333,Retail
+22-08-2024,Door Handle (Front),Body Parts,5,396,1980,Workshop
+22-09-2024,Tube 165/70R14,Tyres & Wheels,6,371,2226,Workshop
+22-09-2024,Coolant (500ml),Consumables,6,198,1188,Fleet
+22-09-2024,Bosch Brake Pads (Rear),Engine Parts,1,724,724,Retail
+23-07-2024,Grease Cartridge,Consumables,7,77,539,Workshop
+23-07-2024,Exide Battery 35AH,Electrical,1,3710,3710,Retail
+23-08-2024,Wheel Balancing Weight Set,Tyres & Wheels,3,90,270,Retail
+23-09-2024,Clutch Plate Set,Engine Parts,8,2011,16088,Workshop
+24-07-2024,Starter Motor Brush Set,Electrical,7,353,2471,Workshop
+24-07-2024,Indicator Bulb Set,Electrical,1,97,97,Retail
+24-07-2024,Clutch Plate Set,Engine Parts,6,2109,12654,Workshop
+24-08-2024,Fuel Filter,Filters,15,170,2550,Fleet
+24-09-2024,Bearing Rear Wheel,Engine Parts,7,760,5320,Workshop
+24-09-2024,Side Mirror (Left),Body Parts,1,669,669,Retail
+24-09-2024,Engine Oil 5W30 (1L),Consumables,1,442,442,Retail
+25-07-2024,Hydraulic Filter,Filters,2,334,668,Retail
+25-07-2024,Starter Motor Brush Set,Electrical,7,433,3031,Workshop
+25-07-2024,Wheel Balancing Weight Set,Tyres & Wheels,7,129,903,Workshop
+25-07-2024,Chain Lubricant,Consumables,6,97,582,Workshop
+25-08-2024,Valve Seal Kit,Engine Parts,4,497,1988,Workshop
+25-08-2024,Lucas Battery 35AH,Electrical,2,2973,5946,Retail
+25-09-2024,Valve Seal Kit,Engine Parts,1,592,592,Retail
+25-09-2024,NGK Air Filter,Filters,8,254,2032,Workshop
+25-09-2024,Clutch Plate Set,Engine Parts,2,2251,4502,Workshop
+25-09-2024,Bosch Brake Pads (Front),Engine Parts,4,914,3656,Workshop
+26-07-2024,Tube 165/70R14,Tyres & Wheels,13,450,5850,Fleet
+26-08-2024,Bearing Front Wheel,Engine Parts,1,739,739,Retail
+26-08-2024,Hydraulic Filter,Filters,9,305,2745,Fleet
+26-08-2024,Timing Belt Kit,Engine Parts,9,1208,10872,Fleet
+26-09-2024,Hydraulic Filter,Filters,6,331,1986,Workshop
+26-09-2024,Door Handle (Front),Body Parts,7,393,2751,Fleet
+27-09-2024,Engine Oil 10W40 (1L),Consumables,2,431,862,Retail
+27-09-2024,Wiper Blade 16inch,Body Parts,3,285,855,Retail
+28-07-2024,Grease Cartridge,Consumables,1,103,103,Retail
+28-07-2024,Bumper Clip Set,Body Parts,1,111,111,Retail
+28-07-2024,Tube 165/70R14,Tyres & Wheels,2,493,986,Retail
+28-07-2024,Engine Oil 10W40 (1L),Consumables,10,432,4320,Fleet
+28-07-2024,Brake Fluid DOT3,Consumables,8,151,1208,Workshop
+28-07-2024,Wiper Blade 16inch,Body Parts,5,218,1090,Retail
+28-07-2024,Starter Motor Brush Set,Electrical,1,323,323,Retail
+28-08-2024,NGK Air Filter,Filters,4,216,864,Workshop
+28-08-2024,Bearing Rear Wheel,Engine Parts,3,840,2520,Workshop
+28-09-2024,Exide Battery 35AH,Electrical,2,3800,7600,Workshop
+28-09-2024,NGK Air Filter,Filters,2,217,434,Workshop
+29-07-2024,Chain Lubricant,Consumables,2,113,226,Retail
+29-07-2024,Indicator Bulb Set,Electrical,3,83,249,Retail
+29-07-2024,Radiator Hose Lower,Engine Parts,1,414,414,Retail
+29-07-2024,Wheel Balancing Weight Set,Tyres & Wheels,4,103,412,Fleet
+29-07-2024,Amaron Battery 45AH,Electrical,3,4396,13188,Retail
+29-08-2024,Grease Cartridge,Consumables,15,82,1230,Fleet
+29-08-2024,Hydraulic Filter,Filters,3,308,924,Retail
+29-08-2024,Exide Battery 35AH,Electrical,5,3206,16030,Workshop
+29-08-2024,Headlight Bulb H4,Electrical,4,235,940,Workshop
+29-09-2024,Champion Spark Plug,Engine Parts,1,108,108,Retail
+29-09-2024,Champion Spark Plug,Engine Parts,5,107,535,Workshop
+30-07-2024,Grease Cartridge,Consumables,1,78,78,Retail
+30-07-2024,Timing Belt Kit,Engine Parts,3,1591,4773,Retail
+30-07-2024,Clutch Plate Set,Engine Parts,2,2347,4694,Retail
+30-07-2024,Wiper Blade 14inch,Body Parts,4,202,808,Workshop
+30-09-2024,Amaron Battery 45AH,Electrical,4,4401,17604,Workshop
+30-09-2024,Piston Ring Set,Engine Parts,2,2213,4426,Retail
+30-09-2024,Lucas Battery 35AH,Electrical,4,3169,12676,Workshop
+31-08-2024,Engine Oil 5W30 (1L),Consumables,2,479,958,Retail
+31-08-2024,Bosch Brake Pads (Rear),Engine Parts,2,813,1626,Retail
+31-08-2024,Valve Seal Kit,Engine Parts,2,590,1180,Retail
